@@ -40,4 +40,10 @@ export default function Header(props) {
         <div className='flex justify-center mt-2'>
           <SocialButton />
         </div>
-        <div className='text-xs mt-4 tracking-wide
+       <div className='text-xs mt-4 tracking-widest' style={{color: '#A0622A'}}>
+          {siteConfig('DESCRIPTION')}
+        </div>
+      </div>
+    </header>
+  )
+}
