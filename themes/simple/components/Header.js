@@ -19,3 +19,6 @@ export default function Header(props) {
         <SmartLink href='/'>
           <div className='flex space-x-6 justify-center items-center'>
             <div className='hover:rotate-45 hover:scale-1
+</header>
+  )
+}
