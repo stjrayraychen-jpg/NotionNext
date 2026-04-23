@@ -73,8 +73,15 @@ const LayoutBase = props => {
   return (
     <ThemeGlobalSimple.Provider value={{ searchModal }}>
       <div
-        id='theme-simple'
-        className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:text-gray-300  bg-white dark:bg-black scroll-smooth`}>
+  id='theme-simple'
+  className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:text-gray-300  bg-white dark:bg-black scroll-smooth`}
+  style={{
+    backgroundImage: 'url(https://i.ibb.co/CsMGHRvm/miao-guide-banner.jpg)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center top',
+    backgroundAttachment: 'fixed',
+    backgroundRepeat: 'no-repeat'
+  }}>
         <Style />
 
         {siteConfig('SIMPLE_TOP_BAR', null, CONFIG) && <TopBar {...props} />}
