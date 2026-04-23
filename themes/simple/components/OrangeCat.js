@@ -1,18 +1,8 @@
 import { useEffect, useState } from 'react'
 
 export default function OrangeCat() {
-  const [message, setMessage] = useState('')
-  const [showMessage, setShowMessage] = useState(false)
   const [blinking, setBlinking] = useState(false)
   const [tailWag, setTailWag] = useState(false)
-
-  const messages = [
-    '让我来喵两句～',
-    '今天薅了多少羊毛？😸',
-    '喵～欢迎来到喵Guide！',
-    '美卡教程看了吗？',
-    '点我有惊喜喵～'
-  ]
 
   useEffect(() => {
     const blinkInterval = setInterval(() => {
@@ -24,26 +14,11 @@ export default function OrangeCat() {
       setTailWag(v => !v)
     }, 800)
 
-    const msgInterval = setInterval(() => {
-      const msg = messages[Math.floor(Math.random() * messages.length)]
-      setMessage(msg)
-      setShowMessage(true)
-      setTimeout(() => setShowMessage(false), 3000)
-    }, 6000)
-
     return () => {
       clearInterval(blinkInterval)
       clearInterval(tailInterval)
-      clearInterval(msgInterval)
     }
   }, [])
-
-  const handleClick = () => {
-    const msg = messages[Math.floor(Math.random() * messages.length)]
-    setMessage(msg)
-    setShowMessage(true)
-    setTimeout(() => setShowMessage(false), 3000)
-  }
 
   return (
     <div
@@ -54,35 +29,33 @@ export default function OrangeCat() {
         cursor: 'pointer',
         userSelect: 'none'
       }}
-      onClick={handleClick}
     >
-      {showMessage && (
+      {/* 固定对话框 */}
+      <div style={{
+        backgroundColor: '#FDF6EC',
+        border: '2px solid #E8873A',
+        borderRadius: '12px',
+        padding: '8px 12px',
+        marginBottom: '8px',
+        fontSize: '12px',
+        color: '#8B4513',
+        whiteSpace: 'nowrap',
+        boxShadow: '2px 2px 8px rgba(0,0,0,0.1)',
+        position: 'relative'
+      }}>
+        让我来喵两句～
         <div style={{
-          backgroundColor: '#FDF6EC',
-          border: '2px solid #E8873A',
-          borderRadius: '12px',
-          padding: '8px 12px',
-          marginBottom: '8px',
-          fontSize: '12px',
-          color: '#8B4513',
-          whiteSpace: 'nowrap',
-          boxShadow: '2px 2px 8px rgba(0,0,0,0.1)',
-          position: 'relative'
-        }}>
-          {message}
-          <div style={{
-            position: 'absolute',
-            bottom: '-8px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 0,
-            height: 0,
-            borderLeft: '6px solid transparent',
-            borderRight: '6px solid transparent',
-            borderTop: '8px solid #E8873A'
-          }} />
-        </div>
-      )}
+          position: 'absolute',
+          bottom: '-8px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 0,
+          height: 0,
+          borderLeft: '6px solid transparent',
+          borderRight: '6px solid transparent',
+          borderTop: '8px solid #E8873A'
+        }} />
+      </div>
 
       <svg width="80" height="100" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
         <path
