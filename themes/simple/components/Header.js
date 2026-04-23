@@ -12,7 +12,7 @@ export default function Header(props) {
   const { siteInfo } = props
 
   return (
-    <header className='text-center justify-between items-center px-6 bg-white h-80 dark:bg-black relative z-10'>
+    <header className='text-center justify-between items-center px-6 h-80 relative z-10' style={{backgroundImage: 'url(https://i.ibb.co/CsMGHRvm/miao-guide-banner.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <div className='float-none inline-block py-12'>
         <SmartLink href='/'>
           {/* 可使用一张单图作为logo */}
