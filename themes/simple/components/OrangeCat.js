@@ -52,8 +52,8 @@ export default function OrangeCat() {
     <div
       style={{
         position: 'fixed',
-        left: '16px',
-        bottom: '80px',
+        right: '16px',
+top: '80px',
         zIndex: 1000,
         display: 'flex',
         flexDirection: 'column',
