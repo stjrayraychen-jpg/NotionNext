@@ -141,7 +141,14 @@ const LayoutBase = props => {
  * @returns
  */
 const LayoutIndex = props => {
-  return <LayoutPostList {...props} />
+  return (
+    <>
+      <div className='flex justify-center py-4'>
+        <OrangeCat />
+      </div>
+      <LayoutPostList {...props} />
+    </>
+  )
 }
 /**
  * 博客列表
