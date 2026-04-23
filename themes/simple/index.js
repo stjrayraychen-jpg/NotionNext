@@ -1,3 +1,4 @@
+import OrangeCat from './components/OrangeCat'
 import { AdSlot } from '@/components/GoogleAdsense'
 import replaceSearchResult from '@/components/Mark'
 import NotionPage from '@/components/NotionPage'
