@@ -4,28 +4,48 @@ const ShareButtons = ({ post }) => {
   const [showQr, setShowQr] = useState(false)
 
   return (
-    <div className='relative inline-block'>
+    <div style={{position: 'relative', display: 'inline-block'}}>
       <button
         onClick={() => setShowQr(!showQr)}
-        className='cursor-pointer bg-green-600 text-white rounded-full mx-1 w-8 h-8 flex items-center justify-center'
-        aria-label='微信公众号'>
+        style={{
+          cursor: 'pointer',
+          backgroundColor: '#07C160',
+          color: 'white',
+          borderRadius: '50%',
+          width: '32px',
+          height: '32px',
+          border: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: '0 4px'
+        }}>
         <i className='fab fa-weixin' />
       </button>
 
       {showQr && (
         <>
           <div
-            className='fixed inset-0 z-30'
+            style={{position: 'fixed', inset: 0, zIndex: 30}}
             onClick={() => setShowQr(false)}
           />
-          <div className='absolute bottom-10 -left-10 z-40 bg-white shadow-xl p-3 text-center rounded-lg'>
+          <div style={{
+            position: 'absolute',
+            bottom: '40px',
+            left: '-40px',
+            zIndex: 40,
+            backgroundColor: 'white',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            padding: '12px',
+            textAlign: 'center',
+            borderRadius: '8px'
+          }}>
             <img
               src='https://i.ibb.co/svrWBYx7/20260502175757-529-85.jpg'
               alt='微信公众号二维码'
-              width={150}
-              height={150}
+              style={{width: '150px', height: '150px'}}
             />
-            <p className='text-xs text-gray-600 mt-1'>扫码关注公众号</p>
+            <p style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>扫码关注公众号</p>
           </div>
         </>
       )}
