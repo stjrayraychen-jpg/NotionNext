@@ -1,4 +1,3 @@
-import { siteConfig } from '@/lib/config'
 import { useState } from 'react'
 
 const ShareBar = ({ post }) => {
@@ -43,12 +42,13 @@ const ShareBar = ({ post }) => {
                 boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
                 padding: '12px',
                 textAlign: 'center',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                minWidth: '220px'
               }}>
               <img
                 src='https://i.ibb.co/svrWBYx7/20260502175757-529-85.jpg'
                 alt='微信公众号二维码'
-                style={{width: '150px', height: '150px', display: 'block'}}
+                style={{maxWidth: '200px', height: 'auto', display: 'block'}}
               />
               <p style={{fontSize: '12px', color: '#666', marginTop: '4px', margin: '4px 0 0 0'}}>扫码关注公众号</p>
             </div>
