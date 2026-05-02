@@ -6,7 +6,8 @@ const ShareButtons = ({ post }) => {
   return (
     <div style={{position: 'relative', display: 'inline-block'}}>
       <button
-        onClick={() => setShowQr(!showQr)}
+        onMouseEnter={() => setShowQr(true)}
+        onMouseLeave={() => setShowQr(false)}
         style={{
           cursor: 'pointer',
           backgroundColor: '#07C160',
@@ -24,12 +25,10 @@ const ShareButtons = ({ post }) => {
       </button>
 
       {showQr && (
-        <>
-          <div
-            style={{position: 'fixed', inset: 0, zIndex: 30}}
-            onClick={() => setShowQr(false)}
-          />
-          <div style={{
+        <div
+          onMouseEnter={() => setShowQr(true)}
+          onMouseLeave={() => setShowQr(false)}
+          style={{
             position: 'absolute',
             bottom: '40px',
             left: '-40px',
@@ -40,14 +39,13 @@ const ShareButtons = ({ post }) => {
             textAlign: 'center',
             borderRadius: '8px'
           }}>
-            <img
-              src='https://i.ibb.co/svrWBYx7/20260502175757-529-85.jpg'
-              alt='微信公众号二维码'
-              style={{width: '150px', height: '150px'}}
-            />
-            <p style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>扫码关注公众号</p>
-          </div>
-        </>
+          <img
+            src='https://i.ibb.co/svrWBYx7/20260502175757-529-85.jpg'
+            alt='微信公众号二维码'
+            style={{width: '150px', height: '150px'}}
+          />
+          <p style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>扫码关注公众号</p>
+        </div>
       )}
     </div>
   )
