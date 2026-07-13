@@ -29,6 +29,9 @@ const WalineComponent = (props) => {
         serverURL: siteConfig('COMMENT_WALINE_SERVER_URL'),
         lang: siteConfig('LANG'),
         reaction: false,
+        reaction: false,
+meta: ['nick'],
+requiredMeta: ['nick'],
         dark: 'html.dark',
         emoji: [
           '//npm.elemecdn.com/@waline/emojis@1.1.0/tieba',
