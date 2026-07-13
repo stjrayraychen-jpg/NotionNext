@@ -6,6 +6,6 @@
 .fa-info:before {
     content: "\f05a";
 }
-.wl-item .wl-meta span:not(.wl-time):not(.wl-nick) {
+.wl-addr, .wl-browser, .wl-os {
   display: none !important;
 }
