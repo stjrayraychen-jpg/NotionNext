@@ -4,25 +4,31 @@ import { useRouter } from 'next/router'
 import '@waline/client/style'
 import { siteConfig } from '@/lib/config'
 
-let waline = null
+let walineInstance = null
 
 const WalineComponent = (props) => {
   const containerRef = createRef()
   const router = useRouter()
 
   useEffect(() => {
-    // 每次渲染或路由改变时，彻底重新初始化，保证父子评论的树状结构能完整重新拉取
-    if (!waline && containerRef.current) {
-      waline = init({
+    // 强制每次执行时如果已有实例就先销毁，确保完全重新渲染
+    if (walineInstance) {
+      walineInstance.destroy()
+      walineInstance = null
+    }
+
+    if (containerRef.current) {
+      walineInstance = init({
         ...props,
         el: containerRef.current,
-        // 删掉了强制锁死的 path，让 Waline 官方原生脚本自己在运行时百分之百准确地抓取真实的 window.location.pathname
         serverURL: siteConfig('COMMENT_WALINE_SERVER_URL'),
         lang: siteConfig('LANG'),
         reaction: false,
         meta: ['nick'],
         requiredMeta: ['nick'],
         dark: 'html.dark',
+        // 显式声明开启子评论树渲染
+        comment: true, 
         emoji: [
           '//npm.elemecdn.com/@waline/emojis@1.1.0/tieba',
           '//npm.elemecdn.com/@waline/emojis@1.1.0/weibo',
@@ -31,26 +37,16 @@ const WalineComponent = (props) => {
       })
     }
 
-    // 路由跳转时直接销毁重建，这是解决单页应用（Next.js）评论区数据不刷新的终极最稳方案
-    const handleRouteChange = () => {
-      if (waline) {
-        waline.destroy()
-        waline = null
-      }
-    }
-
-    router.events.on('routeChangeStart', handleRouteChange)
-
+    // 组件卸载时销毁
     return () => {
-      if (waline) {
-        waline.destroy()
-        waline = null
+      if (walineInstance) {
+        walineInstance.destroy()
+        walineInstance = null
       }
-      router.events.off('routeChangeStart', handleRouteChange)
     }
-  }, [router.asPath]) // 监听路由变化
+  }, [router.asPath]) // 核心：死死监听路由变化，只要路径变了或者刷新了，就彻底重刷评论区
 
-  return <div ref={containerRef} />
+  return <div ref={containerRef} className="w-full" />
 }
 
 export default WalineComponent
