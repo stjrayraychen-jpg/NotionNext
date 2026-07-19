@@ -1,11 +1,11 @@
-import  { createRef, useEffect } from 'react'
+import { createRef, useEffect } from 'react'
 import { init } from '@waline/client'
 import { useRouter } from 'next/router'
 import '@waline/client/style'
 import { siteConfig } from '@/lib/config'
 
-const path = ''
 let waline = null
+
 /**
  * @see https://waline.js.org/guide/get-started.html
  * @param {*} props
@@ -15,9 +15,13 @@ const WalineComponent = (props) => {
   const containerRef = createRef()
   const router = useRouter()
 
-  const updateWaline = url => {
-    if (url !== path && waline) {
-      waline.update(props)
+  const updateWaline = () => {
+    if (waline) {
+      // 路由改变或刷新时，强行让 waline 刷新并锁定当前真实地址栏路径
+      waline.update({
+        ...props,
+        path: window.location.pathname
+      })
     }
   }
 
@@ -26,12 +30,13 @@ const WalineComponent = (props) => {
       waline = init({
         ...props,
         el: containerRef.current,
+        // 关键修复：强制初始化时使用当前浏览器真实路径，防止多级斜杠被模板变量处理错位
+        path: window.location.pathname, 
         serverURL: siteConfig('COMMENT_WALINE_SERVER_URL'),
         lang: siteConfig('LANG'),
         reaction: false,
-        reaction: false,
-meta: ['nick'],
-requiredMeta: ['nick'],
+        meta: ['nick'],
+        requiredMeta: ['nick'],
         dark: 'html.dark',
         emoji: [
           '//npm.elemecdn.com/@waline/emojis@1.1.0/tieba',
