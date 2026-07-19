@@ -2,32 +2,37 @@ import { createRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { siteConfig } from '@/lib/config'
 
-// 将核心初始化逻辑抽离出来
 const WalineClient = ({ containerRef }) => {
   useEffect(() => {
     let walineInstance = null
 
-    const loadWaline = async () => {
-      if (!document.getElementById('waline-css')) {
+    const loadWalineV3 = async () => {
+      // 1. 强行注入官方最新的 v3 版本 CSS 样式
+      if (!document.getElementById('waline-v3-css')) {
         const link = document.createElement('link')
-        link.id = 'waline-css'
+        link.id = 'waline-v3-css'
         link.rel = 'stylesheet'
-        link.href = 'https://unpkg.com/@waline/client@v2/dist/waline.css'
+        link.href = 'https://unpkg.com/@waline/client@v3/dist/waline.css'
         document.head.appendChild(link)
       }
 
+      // 2. 强行引入官方最新的 v3 版本核心控制脚本
       const { init } = await import('@waline/client')
 
       if (containerRef.current) {
         walineInstance = init({
           el: containerRef.current,
-          path: window.location.pathname, // 严格同步当前路径
+          // 锁死当前路径，防止多级斜杠丢失
+          path: window.location.pathname, 
           serverURL: siteConfig('COMMENT_WALINE_SERVER_URL'),
           lang: siteConfig('LANG'),
           reaction: false,
           meta: ['nick'],
           requiredMeta: ['nick'],
           dark: 'html.dark',
+          // 显式传入 v3 的核心渲染参数，激活嵌套树
+          turnstile: false, 
+          search: false,
           emoji: [
             '//npm.elemecdn.com/@waline/emojis@1.1.0/tieba',
             '//npm.elemecdn.com/@waline/emojis@1.1.0/weibo',
@@ -37,9 +42,8 @@ const WalineClient = ({ containerRef }) => {
       }
     }
 
-    // 给 DOM 留出充分的挂载时间
     const timer = setTimeout(() => {
-      loadWaline()
+      loadWalineV3()
     }, 150)
 
     return () => {
@@ -59,35 +63,16 @@ const WalineComponent = () => {
 
   return (
     <div className="w-full">
-      {/* 注入强制显形样式 */}
+      {/* 确保新旧版本交替时的兜底显形样式 */}
       <style jsx global>{`
-        .wl-cards .wl-reply-wrapper,
-        .wl-cards .wl-reply-item {
+        .wl-reply-wrapper, .wl-reply-item {
           display: block !important;
           visibility: visible !important;
           opacity: 1 !important;
-          background: rgba(0, 0, 0, 0.03) !important;
-          padding: 10px !important;
-          margin-top: 5px !important;
-          border-radius: 4px !important;
-        }
-        html.dark .wl-cards .wl-reply-item {
-          background: rgba(255, 255, 255, 0.05) !important;
-        }
-        .wl-reply-item .wl-content, 
-        .wl-reply-item .wl-nick, 
-        .wl-reply-item p {
-          color: var(--tw-prose-body, #333) !important;
-          display: block !important;
-        }
-        html.dark .wl-reply-item .wl-content,
-        html.dark .wl-reply-item .wl-nick,
-        html.dark .wl-reply-item p {
-          color: #e5e7eb !important;
         }
       `}</style>
       
-      {/* 【终极核心】：通过动态赋予不同的 key，强行让 React 每次刷新或切路由时彻底杀掉并重建 Waline 实例 */}
+      {/* 动态 key 强制重构组件，防止单页路由死锁 */}
       <WalineClient key={router.asPath} containerRef={containerRef} />
     </div>
   )
