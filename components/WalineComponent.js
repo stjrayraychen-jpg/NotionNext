@@ -6,32 +6,17 @@ import { siteConfig } from '@/lib/config'
 
 let waline = null
 
-/**
- * @see https://waline.js.org/guide/get-started.html
- * @param {*} props
- * @returns
- */
 const WalineComponent = (props) => {
   const containerRef = createRef()
   const router = useRouter()
 
-  const updateWaline = () => {
-    if (waline) {
-      // 路由改变或刷新时，强行让 waline 刷新并锁定当前真实地址栏路径
-      waline.update({
-        ...props,
-        path: window.location.pathname
-      })
-    }
-  }
-
   useEffect(() => {
-    if (!waline) {
+    // 每次渲染或路由改变时，彻底重新初始化，保证父子评论的树状结构能完整重新拉取
+    if (!waline && containerRef.current) {
       waline = init({
         ...props,
         el: containerRef.current,
-        // 关键修复：强制初始化时使用当前浏览器真实路径，防止多级斜杠被模板变量处理错位
-        path: window.location.pathname, 
+        // 删掉了强制锁死的 path，让 Waline 官方原生脚本自己在运行时百分之百准确地抓取真实的 window.location.pathname
         serverURL: siteConfig('COMMENT_WALINE_SERVER_URL'),
         lang: siteConfig('LANG'),
         reaction: false,
@@ -46,44 +31,24 @@ const WalineComponent = (props) => {
       })
     }
 
-    // 跳转评论
-    router.events.on('routeChangeComplete', updateWaline)
-    const anchor = window.location.hash
-    if (anchor) {
-      // 选择需要观察变动的节点
-      const targetNode = document.getElementsByClassName('wl-cards')[0]
-
-      // 当观察到变动时执行的回调函数
-      const mutationCallback = (mutations) => {
-        for (const mutation of mutations) {
-          const type = mutation.type
-          if (type === 'childList') {
-            const anchorElement = document.getElementById(anchor.substring(1))
-            if (anchorElement && anchorElement.className === 'wl-item') {
-              anchorElement.scrollIntoView({ block: 'end', behavior: 'smooth' })
-              setTimeout(() => {
-                anchorElement.classList.add('animate__animated')
-                anchorElement.classList.add('animate__bounceInRight')
-                observer.disconnect()
-              }, 300)
-            }
-          }
-        }
+    // 路由跳转时直接销毁重建，这是解决单页应用（Next.js）评论区数据不刷新的终极最稳方案
+    const handleRouteChange = () => {
+      if (waline) {
+        waline.destroy()
+        waline = null
       }
-
-      // 观察子节点 变化
-      const observer = new MutationObserver(mutationCallback)
-      observer.observe(targetNode, { childList: true })
     }
+
+    router.events.on('routeChangeStart', handleRouteChange)
 
     return () => {
       if (waline) {
         waline.destroy()
         waline = null
       }
-      router.events.off('routeChangeComplete', updateWaline)
+      router.events.off('routeChangeStart', handleRouteChange)
     }
-  }, [])
+  }, [router.asPath]) // 监听路由变化
 
   return <div ref={containerRef} />
 }
