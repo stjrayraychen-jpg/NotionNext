@@ -2,10 +2,8 @@ import { createRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { siteConfig } from '@/lib/config'
 
-const WalineComponent = (props) => {
-  const containerRef = createRef()
-  const router = useRouter()
-
+// 将核心初始化逻辑抽离出来
+const WalineClient = ({ containerRef }) => {
   useEffect(() => {
     let walineInstance = null
 
@@ -22,9 +20,8 @@ const WalineComponent = (props) => {
 
       if (containerRef.current) {
         walineInstance = init({
-          ...props,
           el: containerRef.current,
-          path: window.location.pathname,
+          path: window.location.pathname, // 严格同步当前路径
           serverURL: siteConfig('COMMENT_WALINE_SERVER_URL'),
           lang: siteConfig('LANG'),
           reaction: false,
@@ -40,9 +37,10 @@ const WalineComponent = (props) => {
       }
     }
 
+    // 给 DOM 留出充分的挂载时间
     const timer = setTimeout(() => {
       loadWaline()
-    }, 200)
+    }, 150)
 
     return () => {
       clearTimeout(timer)
@@ -50,11 +48,18 @@ const WalineComponent = (props) => {
         walineInstance.destroy()
       }
     }
-  }, [router.asPath])
+  }, [containerRef])
+
+  return <div ref={containerRef} className="w-full" />
+}
+
+const WalineComponent = () => {
+  const containerRef = createRef()
+  const router = useRouter()
 
   return (
     <div className="w-full">
-      {/* 终极显形样式注入：强行把所有子评论的容器、文字、昵称设为绝对可见的颜色，防止被主题样式吞掉 */}
+      {/* 注入强制显形样式 */}
       <style jsx global>{`
         .wl-cards .wl-reply-wrapper,
         .wl-cards .wl-reply-item {
@@ -81,7 +86,9 @@ const WalineComponent = (props) => {
           color: #e5e7eb !important;
         }
       `}</style>
-      <div ref={containerRef} className="w-full" />
+      
+      {/* 【终极核心】：通过动态赋予不同的 key，强行让 React 每次刷新或切路由时彻底杀掉并重建 Waline 实例 */}
+      <WalineClient key={router.asPath} containerRef={containerRef} />
     </div>
   )
 }
