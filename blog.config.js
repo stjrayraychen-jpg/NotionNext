@@ -49,7 +49,7 @@ BLOG_FAVICON: process.env.NEXT_PUBLIC_FAVICON || 'https://i.ibb.co/qFswNdNN/cat-
   ...require('./conf/dev.config'), // 开发、调试时需要关注的配置
 
   // 自定义外部脚本，外部样式
-  CUSTOM_EXTERNAL_JS: [''], // e.g. ['http://xx.com/script.js','http://xx.com/script.js']
+  CUSTOM_EXTERNAL_JS: ['https://embed.tawk.to/6a5c699baa83a11d48ca4b39/1jtsfp28p'], // e.g. ['http://xx.com/script.js','http://xx.com/script.js']
   CUSTOM_EXTERNAL_CSS: [''], // e.g. ['http://xx.com/style.css','http://xx.com/style.css']
 
   // 自定义菜单
