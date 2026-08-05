@@ -6,3 +6,20 @@
 .fa-info:before {
     content: "\f05a";
 }
+/* 给 Simple 主题顶部导航/Header 区域添加 Banner 背景图 */
+#theme-simple header, 
+header.w-full,
+#header {
+  background-image: url('https://i.ibb.co/CsMGHRvm/miao-guide-banner.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  min-height: 260px !important; /* 控制 Banner 区域的高度 */
+}
+
+/* 调整 Banner 上的文字颜色，防止背景图太深导致看不清字 */
+#theme-simple header *,
+header.w-full * {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+}
