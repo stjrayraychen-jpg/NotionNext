@@ -6,7 +6,3 @@
 .fa-info:before {
     content: "\f05a";
 }
-
-.fa-rss, [class*="rss"] {
-  display: none !important;
-}
