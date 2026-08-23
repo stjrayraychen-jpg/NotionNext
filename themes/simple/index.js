@@ -6,7 +6,6 @@ import { useGlobal } from '@/lib/global'
 import { isBrowser } from '@/lib/utils'
 import { Transition } from '@headlessui/react'
 import dynamic from 'next/dynamic'
-import Script from 'next/script'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useRef } from 'react'
@@ -251,17 +250,6 @@ const LayoutSlug = props => {
               <RecommendPosts recommendPosts={recommendPosts} />
             </>
           )}
-
-          {/* 订阅表单 */}
-          <div className='my-8'>
-            <div id='kit-form-d1f4f31443'></div>
-            <Script
-              async
-              data-uid='d1f4f31443'
-              src='https://miaoguide.kit.com/d1f4f31443/index.js'
-              strategy='lazyOnload'
-            />
-          </div>
 
           {/* 评论区 */}
           <Comment frontMatter={post} />
