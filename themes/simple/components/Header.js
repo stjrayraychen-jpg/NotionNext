@@ -15,7 +15,7 @@ export default function Header(props) {
   const { siteInfo } = props
   return (
     <header className='px-6 bg-white dark:bg-black relative z-10 py-10'>
-      <div className='max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8'>
+      <div className='max-w-9/10 mx-auto flex flex-col lg:flex-row items-center justify-between gap-8'>
         {/* 左侧：logo + 站点信息 */}
         <div className='flex-shrink-0'>
           <SmartLink href='/'>
