@@ -4,6 +4,9 @@ import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
 import SocialButton from './SocialButton'
 import Script from 'next/script'
+
+const KIT_FORM_HTML = `<form action="https://app.kit.com/forms/9834588/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="9834588" data-uid="f2e8653206" data-format="inline" data-version="5" min-width="400 500 600 700 800"><div data-style="clean"><ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul><div data-element="fields" data-stacked="false" class="seva-fields formkit-fields"><div class="formkit-field"><input class="formkit-input" name="email_address" aria-label="Email Address" placeholder="Email Address" required="" type="email" style="color: rgb(0, 0, 0); border-color: rgb(227, 227, 227); border-radius: 4px; font-weight: 400;"></div><button data-element="submit" class="formkit-submit formkit-submit" style="color: rgb(255, 255, 255); background-color: rgb(22, 119, 190); border-radius: 4px; font-weight: 400;"><div class="formkit-spinner"><div></div><div></div><div></div></div><span class="">Subscribe</span></button></div><div class="formkit-powered-by-convertkit-container"><a href="https://kit.com/features/forms?utm_campaign=poweredby&utm_content=form&utm_medium=referral&utm_source=dynamic" data-element="powered-by" class="formkit-powered-by-convertkit" data-variant="dark" target="_blank" rel="nofollow noopener">Built with Kit</a></div></div></form>`
+
 /**
  * 网站顶部
  * @returns
@@ -48,14 +51,12 @@ export default function Header(props) {
 
         {/* 订阅表单 */}
         <div className='mt-6 flex justify-center'>
-          <div id='kit-form-d1f4f31443'></div>
-          <Script
-            async
-            data-uid='d1f4f31443'
-            src='https://miaoguide.kit.com/d1f4f31443/index.js'
-            strategy='lazyOnload'
+          <div
+            className='max-w-md w-full'
+            dangerouslySetInnerHTML={{ __html: KIT_FORM_HTML }}
           />
         </div>
+        <Script src='https://f.convertkit.com/ckjs/ck.5.js' strategy='lazyOnload' />
       </div>
     </header>
   )
